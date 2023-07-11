@@ -33,7 +33,7 @@ public class MovieService {
         log.info("### Success at posting movie with name {} ###", movieRequestDto.name());
         return new MovieResponseDto(response);
 
-        // movieAlreadyExistAuthenticationException -> verify if product already exists
+        // MovieAlreadyExistException -> verify if product already exists
     }
 
 

@@ -1,8 +1,8 @@
 package br.com.compass.pb.asynchers.compassflix.entity;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 
-@Entity(name = "movie")
+@Document
 public class Movie {
 
     @Id

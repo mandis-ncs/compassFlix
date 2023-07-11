@@ -13,20 +13,20 @@ public class MovieService {
     @Autowired
     private MovieRepository movie;
 
-    public List<Movie> findAll() {
-    }
-
-    public Movie findById(Integer id) {
-    }
-
-    public Movie insert(Movie obj) {
-    }
-
-    public void delete(Integer id) {
-    }
-
-    public Movie update(Movie obj) {
-    }
+//    public List<Movie> findAll() {
+//    }
+//
+//    public Movie findById(Integer id) {
+//    }
+//
+//    public Movie insert(Movie obj) {
+//    }
+//
+//    public void delete(Integer id) {
+//    }
+//
+//    public Movie update(Movie obj) {
+//    }
 
 
 

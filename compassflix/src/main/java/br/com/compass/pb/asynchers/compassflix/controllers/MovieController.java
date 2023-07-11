@@ -20,9 +20,9 @@ public class MovieController {
 
     /*@GetMapping
     public ResponseEntity<List<Movie>> FindAll() {
-    }
+    }*/
 
-    @GetMapping
+    /*@GetMapping
     public ResponseEntity<Movie> findById(@PathVariable Integer id) {
     } */
 
@@ -33,11 +33,17 @@ public class MovieController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    /*@DeleteMapping
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieResponseDto> update(@RequestBody @Valid MovieRequestDto movieRequestDto, @PathVariable String id, UriComponentsBuilder builder) {
+        var response = service.putMovie(movieRequestDto, id);
+        var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(response.id()).toUri();
+        return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Movie movie, @PathVariable Integer id) {
+
+    /*@DeleteMapping
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
     }*/
+
+
 }

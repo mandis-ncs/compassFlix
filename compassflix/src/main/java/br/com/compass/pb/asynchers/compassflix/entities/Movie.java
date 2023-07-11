@@ -1,14 +1,14 @@
 package br.com.compass.pb.asynchers.compassflix.entities;
 
 import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -16,12 +16,12 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 
-@Entity(name = "movie")
+@Document
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
 
     private String name;
 
@@ -31,20 +31,20 @@ public class Movie {
 
     private Double duration;
 
-    private Date releaseDate;
+    private String releaseDate;
 
     private String pgRating;
 
-    private LocalDateTime registrationDate;
+    private Instant registrationDate;
 
     public Movie(MovieRequestDto movieRequestDto) {
-        this.name = movieRequestDto.name();
+        this.name = movieRequestDto.name().toLowerCase();
         this.description = movieRequestDto.description();
         this.genre = movieRequestDto.genre();
         this.duration = movieRequestDto.duration();
         this.releaseDate = movieRequestDto.releaseDate();
         this.pgRating = movieRequestDto.pgRating();
-        this.registrationDate = movieRequestDto.registrationDate();
+        this.registrationDate = Instant.now();
     }
 
 }

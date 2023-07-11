@@ -2,20 +2,17 @@ package br.com.compass.pb.asynchers.compassflix.controllers;
 
 import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
-import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.services.MovieService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
+import java.util.Date;
 
 @RestController
-@RequestMapping("/compassflix")
+@RequestMapping("/compassflix/movies")
 public class MovieController {
 
     @Autowired
@@ -32,7 +29,7 @@ public class MovieController {
     @PostMapping
     public ResponseEntity<MovieResponseDto> insert(@RequestBody @Valid MovieRequestDto movieRequestDto, UriComponentsBuilder builder) {
         var response = service.postMovie(movieRequestDto);
-        var uri = builder.path("/compassflix/{id}").buildAndExpand(response.id()).toUri();
+        var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
 

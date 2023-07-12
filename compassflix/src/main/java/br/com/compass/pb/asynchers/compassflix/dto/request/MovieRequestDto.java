@@ -2,6 +2,10 @@ package br.com.compass.pb.asynchers.compassflix.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Date;
+
 // validation annotations go here
 
 public record MovieRequestDto(
@@ -12,9 +16,9 @@ public record MovieRequestDto(
         @NotNull
         String genre,
         @NotNull
-        Double duration,
+        Long duration,
         @NotNull
-        String releaseDate,
+        LocalDate releaseDate,
         @NotNull
         String pgRating
 ) {

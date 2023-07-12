@@ -1,10 +1,12 @@
 package br.com.compass.pb.asynchers.compassflix.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.naming.AuthenticationException;
-
-public class MovieAlreadyExistException extends AuthenticationException {
-    public MovieAlreadyExistException(final String msg) {
-        super(msg);
+@ResponseStatus(code = HttpStatus.CONFLICT)
+public class MovieAlreadyExistException extends RuntimeException {
+    public MovieAlreadyExistException(String message) {
+        super(message);
     }
+
 }

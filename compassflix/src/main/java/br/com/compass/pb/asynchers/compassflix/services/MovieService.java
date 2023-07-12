@@ -4,6 +4,7 @@ import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.exceptions.ListIsEmptyException;
+import br.com.compass.pb.asynchers.compassflix.exceptions.MovieAlreadyExistException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
 import br.com.compass.pb.asynchers.compassflix.repositories.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,17 @@ public class MovieService {
         return response;
     }
 
+    public List<MovieResponseDto> searchByName(String name) {
+
+        return repository.findAll().stream().filter(movie -> movie.getName().contains(name)).
+                map(MovieResponseDto::new).toList();
+    }
+
     public MovieResponseDto postMovie(MovieRequestDto movieRequestDto) {
         log.info("### Calling post movie with name {} ###", movieRequestDto.name());
+        if(repository.findAll().stream().anyMatch(movie -> movie.getName().equalsIgnoreCase(movieRequestDto.name()))) {
+            throw new MovieAlreadyExistException("That movie already exists!");
+        }
         var response = repository.save(new Movie(movieRequestDto));
 
         log.info("### Success at posting movie with name {} ###", movieRequestDto.name());

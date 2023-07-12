@@ -4,11 +4,15 @@ import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 //import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -29,9 +33,9 @@ public class Movie {
 
     private String genre;
 
-    private Double duration;
+    private Long duration;
 
-    private String releaseDate;
+    private LocalDate releaseDate;
 
     private String pgRating;
 
@@ -44,7 +48,7 @@ public class Movie {
         this.duration = movieRequestDto.duration();
         this.releaseDate = movieRequestDto.releaseDate();
         this.pgRating = movieRequestDto.pgRating();
-        this.registrationDate = Instant.now();
+        this.registrationDate = Instant.now(Clock.systemDefaultZone());
     }
 
 }

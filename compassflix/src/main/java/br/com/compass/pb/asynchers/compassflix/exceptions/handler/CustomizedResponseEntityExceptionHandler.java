@@ -1,6 +1,7 @@
 package br.com.compass.pb.asynchers.compassflix.exceptions.handler;
 import br.com.compass.pb.asynchers.compassflix.exceptions.ExceptionResponse;
 import br.com.compass.pb.asynchers.compassflix.exceptions.ListIsEmptyException;
+import br.com.compass.pb.asynchers.compassflix.exceptions.MovieAlreadyExistException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         );
 
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MovieAlreadyExistException.class)
+    public final ResponseEntity<ExceptionResponse> handlerMovieAlreadyExistException(Exception e, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                LocalDateTime.now(),
+                e.getMessage(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MovieNotFoundException.class)

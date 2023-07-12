@@ -1,5 +1,6 @@
 package br.com.compass.pb.asynchers.compassflix.exceptions.handler;
 import br.com.compass.pb.asynchers.compassflix.exceptions.ExceptionResponse;
+import br.com.compass.pb.asynchers.compassflix.exceptions.ListIsEmptyException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ListIsEmptyException.class)
+    public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(Exception ex, WebRequest request) throws Exception {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.NOT_FOUND);
+
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -52,4 +61,5 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 
     }
+
 }

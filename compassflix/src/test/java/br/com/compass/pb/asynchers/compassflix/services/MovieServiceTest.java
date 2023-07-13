@@ -108,10 +108,24 @@ class MovieServiceTest {
         assertEquals(REGISTRATION_DATE, response.getRegistrationDate());
     }
 
-    //@Test
-    //void searchByName() {
+    @Test
+    void searchByName() {
+        when(repository.findByName(anyString())).thenReturn(movie);
 
-    //}
+        Movie response = service.searchByName(NAME);
+
+        assertNotNull(response);
+
+        assertEquals(Movie.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(DESCRIPTION, response.getDescription());
+        assertEquals(GENRE, response.getGenre());
+        assertEquals(DURATION, response.getDuration());
+        assertEquals(RELEASE_DATE, response.getReleaseDate());
+        assertEquals(PG_RATING, response.getPgRating());
+        assertEquals(REGISTRATION_DATE, response.getRegistrationDate());
+    }
 
     @Test
     void postMovie() {

@@ -41,10 +41,15 @@ public class MovieService {
 //        return response;
     }
 
-    public List<MovieResponseDto> searchByName(String name) {
+    /*public List<MovieResponseDto> searchByName(String name) {
 
         return repository.findAll().stream().filter(movie -> movie.getName().contains(name)).
                 map(MovieResponseDto::new).toList();
+
+    }*/
+
+    public Movie searchByName(String name) {
+        return repository.findByName(name);
     }
 
     public MovieResponseDto postMovie(MovieRequestDto movieRequestDto) {

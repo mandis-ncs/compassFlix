@@ -3,6 +3,7 @@ package br.com.compass.pb.asynchers.compassflix.services;
 import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
+import br.com.compass.pb.asynchers.compassflix.exceptions.ExceptionResponse;
 import br.com.compass.pb.asynchers.compassflix.exceptions.ListIsEmptyException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieAlreadyExistException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
@@ -82,15 +83,17 @@ public class MovieService {
         existingMovie.setPgRating(movieRequestDto.pgRating());
 
         log.info("### Saving movie ###");
-        Movie updatedMovie =repository.save(existingMovie);
+        Movie updatedMovie = repository.save(existingMovie);
         return new MovieResponseDto(updatedMovie);
     }
 
-    /*public void delete(Integer id) {
-    }*/
-
-
-
-
-
+    public void delete(String id) {
+        log.info("### Searching movie by String Id {} ###", id);
+        var response = repository.findById(id);
+        if (response.isEmpty()) {
+            throw new MovieNotFoundException("That movie doesn't exists!");
+        }
+        log.info("### Deleted movie ###");
+		repository.deleteById(id);
+	}
 }

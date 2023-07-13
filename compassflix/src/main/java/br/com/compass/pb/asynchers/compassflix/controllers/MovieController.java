@@ -57,10 +57,10 @@ public class MovieController {
         return ResponseEntity.ok().body(response);
     }
 
-
-    /*@DeleteMapping
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-    }*/
-
+    @DeleteMapping("/{id}")
+ 	public ResponseEntity<Void> delete(@PathVariable String id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }

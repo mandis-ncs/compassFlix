@@ -51,7 +51,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(ListIsEmptyException.class)
-    public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(Exception ex, WebRequest request) throws Exception {
+    public final ResponseEntity<ExceptionResponse> handleMovieNotFoundException(Exception ex, WebRequest request) throws Exception {
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(),
                 ex.getMessage(), request.getDescription(false));
 

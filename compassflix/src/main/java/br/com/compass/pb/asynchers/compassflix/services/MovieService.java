@@ -3,7 +3,6 @@ package br.com.compass.pb.asynchers.compassflix.services;
 import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
-import br.com.compass.pb.asynchers.compassflix.exceptions.ExceptionResponse;
 import br.com.compass.pb.asynchers.compassflix.exceptions.ListIsEmptyException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieAlreadyExistException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,23 +23,22 @@ public class MovieService {
     @Autowired
     private final MovieRepository repository;
 
-    public List<MovieResponseDto> findAllMovies() {
+    public List<Movie> findAllMovies() {
         var response = repository.findAll();
-        var movies = new ArrayList<MovieResponseDto>();
         if (response.isEmpty()) {
             throw new ListIsEmptyException("No movies found!");
         }
-        response.forEach(movie -> movies.add(new MovieResponseDto(movie))); //lambda
-        return movies;
+        return response;
 
     }
 
-    public Optional<Movie> findMovieById(String id) {
-        var response = repository.findById(id);
-        if (response.isEmpty()) {
-            throw new MovieNotFoundException("That movie doesn't exists!");
-        }
-        return response;
+    public Movie findMovieById(String id) {
+        Optional<Movie> response = repository.findById(id);
+        return response.orElseThrow(() -> new MovieNotFoundException("That movie doesn't exists!"));
+//        if (response.isEmpty()) {
+//            throw new MovieNotFoundException("That movie doesn't exists!");
+//        }
+//        return response;
     }
 
     public List<MovieResponseDto> searchByName(String name) {

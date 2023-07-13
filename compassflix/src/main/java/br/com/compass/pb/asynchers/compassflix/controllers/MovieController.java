@@ -5,32 +5,34 @@ import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.services.MovieService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/compassflix/movies")
 public class MovieController {
 
     @Autowired
+    private ModelMapper mapper;
+
+    @Autowired
     private MovieService service;
 
     @GetMapping
-    public ResponseEntity<List<MovieResponseDto>> findAll(UriComponentsBuilder builder) {
+    public ResponseEntity<List<Movie>> findAll(UriComponentsBuilder builder) {
         var response = service.findAllMovies();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Movie>> findById(@PathVariable String id) {
+    public ResponseEntity<Movie> findById(@PathVariable String id) {
 
-        var response = service.findMovieById(id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(mapper.map(service.findMovieById(id), Movie.class));
 
     }
 

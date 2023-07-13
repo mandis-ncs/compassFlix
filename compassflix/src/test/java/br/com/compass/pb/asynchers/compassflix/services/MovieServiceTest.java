@@ -1,5 +1,6 @@
 package br.com.compass.pb.asynchers.compassflix.services;
 
+import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.repositories.MovieRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +27,7 @@ import static org.mockito.Mockito.when;
 class MovieServiceTest {
 
     private static final String ID = "1234";
-    private static final Integer INDEX   = 0;
+    private static final Integer INDEX = 0;
     private static final String NAME = "Movie 3";
     private static final String DESCRIPTION = "blablabla";
     private static final String GENRE = "Action";
@@ -47,6 +49,8 @@ class MovieServiceTest {
     private ModelMapper mapper;
 
     private Movie movie;
+
+    private MovieRequestDto movieRequestDto;
     private MovieResponseDto movieResponseDto;
     private Optional<Movie> optionalMovie;
 
@@ -57,10 +61,11 @@ class MovieServiceTest {
     }
 
     private void startMovie() {
-        movie = new Movie(ID, NAME, DESCRIPTION,  GENRE, DURATION, RELEASE_DATE, PG_RATING, REGISTRATION_DATE);
-        movieResponseDto = new MovieResponseDto(ID, NAME, DESCRIPTION,  GENRE, DURATION, RELEASE_DATE,
+        movie = new Movie(ID, NAME, DESCRIPTION, GENRE, DURATION, RELEASE_DATE, PG_RATING, REGISTRATION_DATE);
+        movieResponseDto = new MovieResponseDto(ID, NAME, DESCRIPTION, GENRE, DURATION, RELEASE_DATE,
                 PG_RATING, REGISTRATION_DATE);
-        optionalMovie = Optional.of(new Movie(ID, NAME, DESCRIPTION,  GENRE, DURATION, RELEASE_DATE,
+        movieRequestDto = new MovieRequestDto(NAME, DESCRIPTION, GENRE, DURATION, RELEASE_DATE, PG_RATING);
+        optionalMovie = Optional.of(new Movie(ID, NAME, DESCRIPTION, GENRE, DURATION, RELEASE_DATE,
                 PG_RATING, REGISTRATION_DATE));
     }
 
@@ -102,15 +107,33 @@ class MovieServiceTest {
         assertEquals(PG_RATING, response.getPgRating());
         assertEquals(REGISTRATION_DATE, response.getRegistrationDate());
     }
-//
-//    @Test
-//    void searchByName() {
-//    }
-//
-//    @Test
-//    void postMovie() {
-//    }
-//
+
+    //@Test
+    //void searchByName() {
+
+    //}
+
+    @Test
+    void postMovie() {
+        when(repository.save(any())).thenReturn(movie);
+
+        MovieResponseDto response = service.postMovie(movieRequestDto);
+
+        assertNotNull(response);
+
+        assertEquals(MovieResponseDto.class, response.getClass());
+
+        assertEquals(ID, response.id());
+        assertEquals(NAME, response.name());
+        assertEquals(DESCRIPTION, response.description());
+        assertEquals(GENRE, response.genre());
+        assertEquals(DURATION, response.duration());
+        assertEquals(RELEASE_DATE, response.releaseDate());
+        assertEquals(PG_RATING, response.pgRating());
+        assertEquals(REGISTRATION_DATE, response.registrationDate());
+
+    }
+
 //    @Test
 //    void putMovie() {
 //    }

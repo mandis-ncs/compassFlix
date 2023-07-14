@@ -59,11 +59,10 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponseDto> update(@RequestBody @Valid MovieRequestDto movieRequestDto,
-                                                   @PathVariable String id, UriComponentsBuilder builder) {
-        var response = service.putMovie(movieRequestDto, id);
-        var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(response.id()).toUri();
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<MovieResponseDto> update(@PathVariable String id, @RequestBody MovieRequestDto movieRequestDto, UriComponentsBuilder builder) {
+        MovieResponseDto updatedMovie = service.updateMovie(id, movieRequestDto);
+        var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(updatedMovie.id()).toUri();
+        return ResponseEntity.ok(updatedMovie);
     }
 
     @DeleteMapping("/{id}")

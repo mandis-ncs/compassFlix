@@ -67,22 +67,21 @@ public class MovieService {
 
 
 
-    public MovieResponseDto putMovie(MovieRequestDto movieRequestDto, String id) {
-
+    public MovieResponseDto updateMovie(String id, MovieRequestDto obj) {
         log.info("### Searching movie by String Id {} ###", id);
-        Optional<Movie> optionalMovie = repository.findById(id);
-        if (optionalMovie.isEmpty()) {
+        Movie existingMovie = findMovieById(id);
+
+        if (existingMovie == null) {
             throw new MovieNotFoundException("Movie not found");
         }
 
         log.info("### Updating movie ###");
-        Movie existingMovie = optionalMovie.get();
-        existingMovie.setName(movieRequestDto.name());
-        existingMovie.setDescription(movieRequestDto.description());
-        existingMovie.setGenre(movieRequestDto.genre());
-        existingMovie.setDuration(movieRequestDto.duration());
-        existingMovie.setReleaseDate(movieRequestDto.releaseDate());
-        existingMovie.setPgRating(movieRequestDto.pgRating());
+        existingMovie.setName(obj.name());
+        existingMovie.setDescription(obj.description());
+        existingMovie.setGenre(obj.genre());
+        existingMovie.setDuration(obj.duration());
+        existingMovie.setReleaseDate(obj.releaseDate());
+        existingMovie.setPgRating(obj.pgRating());
 
         log.info("### Saving movie ###");
         Movie updatedMovie = repository.save(existingMovie);

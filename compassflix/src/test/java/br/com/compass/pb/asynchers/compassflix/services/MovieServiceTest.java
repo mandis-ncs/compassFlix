@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class MovieServiceTest {
@@ -148,9 +148,51 @@ class MovieServiceTest {
 
     }
 
-//    @Test
-//    void putMovie() {
-//    }
+    @Test
+    void updateMovie() {
+
+        // mocking data of existing movie and changes to be updated
+        String id = "1";
+        MovieRequestDto movieRequestDto1 = new MovieRequestDto("Updated Movie", "Updated description",
+                "Drama", 150L,LocalDate.of(2020, 1, 1), "pg-13");
+
+        Movie existingMovie = new Movie();
+        existingMovie.setId(id);
+        existingMovie.setName("Movie 1");
+        existingMovie.setDescription("Original description");
+        existingMovie.setGenre("Action");
+        existingMovie.setDuration(120L);
+        existingMovie.setReleaseDate(LocalDate.of(2015, 12, 12));
+        existingMovie.setPgRating("pg-2");
+
+        Movie updatedMovie = new Movie();
+        updatedMovie.setId(id);
+        updatedMovie.setName(movieRequestDto1.name());
+        updatedMovie.setDescription(movieRequestDto1.description());
+        updatedMovie.setGenre(movieRequestDto1.genre());
+        updatedMovie.setDuration(movieRequestDto1.duration());
+        updatedMovie.setReleaseDate(movieRequestDto1.releaseDate());
+        updatedMovie.setPgRating(movieRequestDto1.pgRating());
+
+        // find by id and update
+        when(repository.findById(id)).thenReturn(Optional.of(existingMovie));
+        when(repository.save(existingMovie)).thenReturn(updatedMovie);
+
+        MovieResponseDto result = service.updateMovie(id, movieRequestDto1);
+
+        // verify if update occurs right and if the result is correct
+        verify(repository, times(1)).findById(id);
+        verify(repository, times(1)).save(existingMovie);
+
+        assertEquals(updatedMovie.getId(), result.id());
+        assertEquals(updatedMovie.getName(), result.name());
+        assertEquals(updatedMovie.getDescription(), result.description());
+        assertEquals(updatedMovie.getGenre(), result.genre());
+        assertEquals(updatedMovie.getDuration(), result.duration());
+        assertEquals(updatedMovie.getReleaseDate(), result.releaseDate());
+        assertEquals(updatedMovie.getPgRating(), result.pgRating());
+    }
+
 //
 //    @Test
 //    void delete() {

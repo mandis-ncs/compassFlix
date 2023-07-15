@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2ac77411-adac-4131-91aa-6b997ae3f175" name="Changes" comment="feature:[04.4] finished tests" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2ScS4S8dE6EVkwnUMduZ079mF0H" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "last_opened_file_path": "C:/Users/Usuário/Desktop/compassFlix"
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.MovieControllerTest">
+    <configuration name="IntegrationTest.shouldBeAbleToUpdateAMovie" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="compassflix" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.com.compass.pb.asynchers.compassflix.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="br.com.compass.pb.asynchers.compassflix" />
+      <option name="MAIN_CLASS_NAME" value="br.com.compass.pb.asynchers.compassflix.IntegrationTest" />
+      <option name="METHOD_NAME" value="shouldBeAbleToUpdateAMovie" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IntegrationTest.shouldReturnAnExceptionWhenCannotUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="compassflix" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.com.compass.pb.asynchers.compassflix.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="br.com.compass.pb.asynchers.compassflix" />
+      <option name="MAIN_CLASS_NAME" value="br.com.compass.pb.asynchers.compassflix.IntegrationTest" />
+      <option name="METHOD_NAME" value="shouldReturnAnExceptionWhenCannotUpdate" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MovieControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="compassflix" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.com.compass.pb.asynchers.compassflix.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="br.com.compass.pb.asynchers.compassflix.controllers" />
+      <option name="MAIN_CLASS_NAME" value="br.com.compass.pb.asynchers.compassflix.controllers.MovieControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MovieControllerTest.shouldBeAbleToPostAMovie" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="compassflix" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.com.compass.pb.asynchers.compassflix.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="br.com.compass.pb.asynchers.compassflix.controllers" />
+      <option name="MAIN_CLASS_NAME" value="br.com.compass.pb.asynchers.compassflix.controllers.MovieControllerTest" />
+      <option name="METHOD_NAME" value="shouldBeAbleToPostAMovie" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MovieControllerTest.shouldBeAbleToUpdateAMovie" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="compassflix" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="br.com.compass.pb.asynchers.compassflix.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="br.com.compass.pb.asynchers.compassflix.controllers" />
+      <option name="MAIN_CLASS_NAME" value="br.com.compass.pb.asynchers.compassflix.controllers.MovieControllerTest" />
+      <option name="METHOD_NAME" value="shouldBeAbleToUpdateAMovie" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.MovieControllerTest" />
+        <item itemvalue="JUnit.MovieControllerTest.shouldBeAbleToUpdateAMovie" />
+        <item itemvalue="JUnit.MovieControllerTest.shouldBeAbleToPostAMovie" />
+        <item itemvalue="JUnit.IntegrationTest.shouldReturnAnExceptionWhenCannotUpdate" />
+        <item itemvalue="JUnit.IntegrationTest.shouldBeAbleToUpdateAMovie" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2ac77411-adac-4131-91aa-6b997ae3f175" name="Changes" comment="" />
+      <created>1689444209083</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1689444209083</updated>
+    </task>
+    <task id="LOCAL-00001" summary="feature:[04.4] finished tests">
+      <created>1689445213633</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1689445213633</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="task-04.4" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feature:[04.4] finished tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature:[04.4] finished tests" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/compassflix/src/main/java/br/com/compass/pb/asynchers/compassflix/controller/MovieController.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

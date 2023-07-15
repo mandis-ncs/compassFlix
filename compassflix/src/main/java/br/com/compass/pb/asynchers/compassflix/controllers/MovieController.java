@@ -45,8 +45,8 @@ public class MovieController {
         return ResponseEntity.ok().body(response);
     }*/
 
-    @GetMapping(params = "search")
-    public ResponseEntity<List<Movie>> findByName(@RequestParam("search") String name) {
+    @GetMapping(value = "/search", params = "name")
+    public ResponseEntity<List<Movie>> findByName(@RequestParam("name") String name) {
         var response = service.findByName(name);
 
         return ResponseEntity.ok().body(response);

@@ -191,7 +191,7 @@ public class IntegrationTest {
 
         String jsonResponse = this.mapper.writeValueAsString(movieList);
 
-        mockMvc.perform(get("/compassflix/movies").param("search", "Bastardos inglorios"))
+        mockMvc.perform(get("/compassflix/movies/search").param("name", "Bastardos inglorios"))
                 .andExpect(content().json(jsonResponse))
                 .andExpect(status().isOk()).andExpect(jsonPath("$").isNotEmpty())
                 .andReturn();

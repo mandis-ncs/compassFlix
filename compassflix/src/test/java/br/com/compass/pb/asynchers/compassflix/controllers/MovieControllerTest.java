@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -172,6 +173,8 @@ class MovieControllerTest {
         movie.setId("64b1e14a36a86833234f6a42");
         movie.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
 
+        String id = movie.getId();
+
         MovieResponseDto movieResponseDto = new MovieResponseDto(movie);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/");
@@ -185,5 +188,14 @@ class MovieControllerTest {
         assertNotNull(createdMovie);
         assertSame(movieResponseDto, createdMovie.getBody());
         assertEquals(201, createdMovie.getStatusCodeValue());
-    }
+
+        String expectedPath = "/compassflix/movies/" + id;
+        URI expectedUri = UriComponentsBuilder.fromPath(expectedPath).build().toUri();
+
+        URI locationUri = createdMovie.getHeaders().getLocation();
+        assertNotNull(locationUri);
+        String returnedUri = locationUri.toString();
+        assertEquals(expectedUri.toString(), returnedUri);
+
+  }
 }

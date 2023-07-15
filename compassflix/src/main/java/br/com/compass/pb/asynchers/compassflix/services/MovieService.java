@@ -35,10 +35,6 @@ public class MovieService {
     public Movie findMovieById(String id) {
         Optional<Movie> response = repository.findById(id);
         return response.orElseThrow(() -> new MovieNotFoundException("That movie doesn't exists!"));
-//        if (response.isEmpty()) {
-//            throw new MovieNotFoundException("That movie doesn't exists!");
-//        }
-//        return response;
     }
 
     /*public List<MovieResponseDto> searchByName(String name) {

@@ -3,6 +3,7 @@ package br.com.compass.pb.asynchers.compassflix.services;
 import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
+import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
 import br.com.compass.pb.asynchers.compassflix.repositories.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ class MovieServiceTest {
     }
 
     @Test
-    void findAllMovies() {
+    void whenFindAllThenReturnAnListOfMovies() {
         when(repository.findAll()).thenReturn(List.of(movie));
 
         List<Movie> response = service.findAllMovies();
@@ -90,7 +91,7 @@ class MovieServiceTest {
     }
 
     @Test
-    void findMovieById() {
+    void whenFindByIdThenReturnAnMovieInstance() {
         when(repository.findById(anyString())).thenReturn(optionalMovie);
 
         Movie response = service.findMovieById(ID);
@@ -106,6 +107,20 @@ class MovieServiceTest {
         assertEquals(RELEASE_DATE, response.getReleaseDate());
         assertEquals(PG_RATING, response.getPgRating());
         assertEquals(REGISTRATION_DATE, response.getRegistrationDate());
+    }
+
+    @Test
+    void whenFindByIdThenReturnAnMovieNotFoundException() {
+
+        when(repository.findById(anyString()))
+                .thenThrow(new MovieNotFoundException(OBJECT_NOT_FOUND));
+
+        try{
+            service.findMovieById(ID);
+        } catch (Exception ex) {
+            assertEquals(MovieNotFoundException.class, ex.getClass());
+            assertEquals(OBJECT_NOT_FOUND, ex.getMessage());
+        }
     }
 
     @Test

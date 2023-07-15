@@ -24,15 +24,16 @@ public class MovieController {
     private MovieService service;
 
     @GetMapping
-    public ResponseEntity<List<Movie>> findAll(UriComponentsBuilder builder) {
+    public ResponseEntity<List<Movie>> findAll() {
         var response = service.findAllMovies();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Movie> findById(@PathVariable String id) {
-
-        return ResponseEntity.ok().body(mapper.map(service.findMovieById(id), Movie.class));
+        var response = service.findMovieById(id);
+        return ResponseEntity.ok(response);
+//        return ResponseEntity.ok().body(mapper.map(service.findMovieById(id), Movie.class));
 
     }
 

@@ -110,7 +110,6 @@ class MovieServiceTest {
     }
 
     @Test
-<<<<<<< HEAD
     void whenFindByIdThenReturnAnMovieNotFoundException() {
 
         when(repository.findById(anyString()))
@@ -124,13 +123,8 @@ class MovieServiceTest {
         }
     }
 
-    @Test
-    void searchByName() {
-        when(repository.findByName(anyString())).thenReturn(movie);
-=======
     void findByName() {
         when(repository.findByNameIgnoreCaseContaining(anyString())).thenReturn(List.of(movie));
->>>>>>> task04.3
 
         List<Movie> response = service.findByName(movieResponseDto.name().substring(0, 2));
 

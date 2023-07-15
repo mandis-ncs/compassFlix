@@ -30,4 +30,5 @@ public record MovieResponseDto(
                 response.getRegistrationDate()
         );
     }
+
 }

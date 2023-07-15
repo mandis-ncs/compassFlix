@@ -110,6 +110,7 @@ class MovieServiceTest {
     }
 
     @Test
+<<<<<<< HEAD
     void whenFindByIdThenReturnAnMovieNotFoundException() {
 
         when(repository.findById(anyString()))
@@ -126,20 +127,25 @@ class MovieServiceTest {
     @Test
     void searchByName() {
         when(repository.findByName(anyString())).thenReturn(movie);
+=======
+    void findByName() {
+        when(repository.findByNameIgnoreCaseContaining(anyString())).thenReturn(List.of(movie));
+>>>>>>> task04.3
 
-        Movie response = service.searchByName(NAME);
+        List<Movie> response = service.findByName(movieResponseDto.name().substring(0, 2));
 
         assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(Movie.class, response.get(INDEX).getClass());
 
-        assertEquals(Movie.class, response.getClass());
-        assertEquals(ID, response.getId());
-        assertEquals(NAME, response.getName());
-        assertEquals(DESCRIPTION, response.getDescription());
-        assertEquals(GENRE, response.getGenre());
-        assertEquals(DURATION, response.getDuration());
-        assertEquals(RELEASE_DATE, response.getReleaseDate());
-        assertEquals(PG_RATING, response.getPgRating());
-        assertEquals(REGISTRATION_DATE, response.getRegistrationDate());
+        assertEquals(ID, response.get(INDEX).getId());
+        assertEquals(NAME, response.get(INDEX).getName());
+        assertEquals(DESCRIPTION, response.get(INDEX).getDescription());
+        assertEquals(GENRE, response.get(INDEX).getGenre());
+        assertEquals(DURATION, response.get(INDEX).getDuration());
+        assertEquals(RELEASE_DATE, response.get(INDEX).getReleaseDate());
+        assertEquals(PG_RATING, response.get(INDEX).getPgRating());
+        assertEquals(REGISTRATION_DATE, response.get(INDEX).getRegistrationDate());
     }
 
     @Test

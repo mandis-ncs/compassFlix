@@ -44,9 +44,9 @@ public class MovieController {
         return ResponseEntity.ok().body(response);
     }*/
 
-    @GetMapping(params = "movieName")
-    public ResponseEntity<Movie> searchByName(@RequestParam String movieName) {
-        var response = service.searchByName(movieName);
+    @GetMapping(params = "search")
+    public ResponseEntity<List<Movie>> findByName(@RequestParam("search") String name) {
+        var response = service.findByName(name);
 
         return ResponseEntity.ok().body(response);
     }
@@ -67,9 +67,9 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
- 	public ResponseEntity<Void> delete(@PathVariable String id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

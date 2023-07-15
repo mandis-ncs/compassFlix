@@ -44,8 +44,9 @@ public class MovieService {
 
     }*/
 
-    public Movie searchByName(String name) {
-        return repository.findByName(name);
+    public List<Movie> findByName(String name) {
+
+        return repository.findByNameIgnoreCaseContaining(name);
     }
 
     public MovieResponseDto postMovie(MovieRequestDto movieRequestDto) {
@@ -91,6 +92,6 @@ public class MovieService {
             throw new MovieNotFoundException("That movie doesn't exists!");
         }
         log.info("### Deleted movie ###");
-		repository.deleteById(id);
-	}
+        repository.deleteById(id);
+    }
 }

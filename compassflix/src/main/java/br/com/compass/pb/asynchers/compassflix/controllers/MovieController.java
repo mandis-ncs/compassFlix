@@ -7,6 +7,7 @@ import br.com.compass.pb.asynchers.compassflix.services.MovieService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -56,14 +57,18 @@ public class MovieController {
                                                    UriComponentsBuilder builder) {
         var response = service.postMovie(movieRequestDto);
         var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(response.id()).toUri();
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.created(uri)
+                .header(HttpHeaders.LOCATION, uri.toString())
+                .body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MovieResponseDto> update(@PathVariable String id, @RequestBody MovieRequestDto movieRequestDto, UriComponentsBuilder builder) {
         MovieResponseDto updatedMovie = service.updateMovie(id, movieRequestDto);
         var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(updatedMovie.id()).toUri();
-        return ResponseEntity.ok(updatedMovie);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.LOCATION, uri.toString())
+                .body(updatedMovie);
     }
 
     @DeleteMapping("/{id}")

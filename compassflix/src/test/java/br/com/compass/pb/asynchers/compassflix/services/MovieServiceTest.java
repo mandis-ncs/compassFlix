@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class MovieServiceTest {
@@ -109,22 +109,23 @@ class MovieServiceTest {
     }
 
     @Test
-    void searchByName() {
-        when(repository.findByName(anyString())).thenReturn(movie);
+    void findByName() {
+        when(repository.findByNameIgnoreCaseContaining(anyString())).thenReturn(List.of(movie));
 
-        Movie response = service.searchByName(NAME);
+        List<Movie> response = service.findByName(movieResponseDto.name().substring(0, 2));
 
         assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(Movie.class, response.get(INDEX).getClass());
 
-        assertEquals(Movie.class, response.getClass());
-        assertEquals(ID, response.getId());
-        assertEquals(NAME, response.getName());
-        assertEquals(DESCRIPTION, response.getDescription());
-        assertEquals(GENRE, response.getGenre());
-        assertEquals(DURATION, response.getDuration());
-        assertEquals(RELEASE_DATE, response.getReleaseDate());
-        assertEquals(PG_RATING, response.getPgRating());
-        assertEquals(REGISTRATION_DATE, response.getRegistrationDate());
+        assertEquals(ID, response.get(INDEX).getId());
+        assertEquals(NAME, response.get(INDEX).getName());
+        assertEquals(DESCRIPTION, response.get(INDEX).getDescription());
+        assertEquals(GENRE, response.get(INDEX).getGenre());
+        assertEquals(DURATION, response.get(INDEX).getDuration());
+        assertEquals(RELEASE_DATE, response.get(INDEX).getReleaseDate());
+        assertEquals(PG_RATING, response.get(INDEX).getPgRating());
+        assertEquals(REGISTRATION_DATE, response.get(INDEX).getRegistrationDate());
     }
 
     @Test
@@ -148,9 +149,51 @@ class MovieServiceTest {
 
     }
 
-//    @Test
-//    void putMovie() {
-//    }
+    @Test
+    void updateMovie() {
+
+        // mocking data of existing movie and changes to be updated
+        String id = "1";
+        MovieRequestDto movieRequestDto1 = new MovieRequestDto("Updated Movie", "Updated description",
+                "Drama", 150L,LocalDate.of(2020, 1, 1), "pg-13");
+
+        Movie existingMovie = new Movie();
+        existingMovie.setId(id);
+        existingMovie.setName("Movie 1");
+        existingMovie.setDescription("Original description");
+        existingMovie.setGenre("Action");
+        existingMovie.setDuration(120L);
+        existingMovie.setReleaseDate(LocalDate.of(2015, 12, 12));
+        existingMovie.setPgRating("pg-2");
+
+        Movie updatedMovie = new Movie();
+        updatedMovie.setId(id);
+        updatedMovie.setName(movieRequestDto1.name());
+        updatedMovie.setDescription(movieRequestDto1.description());
+        updatedMovie.setGenre(movieRequestDto1.genre());
+        updatedMovie.setDuration(movieRequestDto1.duration());
+        updatedMovie.setReleaseDate(movieRequestDto1.releaseDate());
+        updatedMovie.setPgRating(movieRequestDto1.pgRating());
+
+        // find by id and update
+        when(repository.findById(id)).thenReturn(Optional.of(existingMovie));
+        when(repository.save(existingMovie)).thenReturn(updatedMovie);
+
+        MovieResponseDto result = service.updateMovie(id, movieRequestDto1);
+
+        // verify if update occurs right and if the result is correct
+        verify(repository, times(1)).findById(id);
+        verify(repository, times(1)).save(existingMovie);
+
+        assertEquals(updatedMovie.getId(), result.id());
+        assertEquals(updatedMovie.getName(), result.name());
+        assertEquals(updatedMovie.getDescription(), result.description());
+        assertEquals(updatedMovie.getGenre(), result.genre());
+        assertEquals(updatedMovie.getDuration(), result.duration());
+        assertEquals(updatedMovie.getReleaseDate(), result.releaseDate());
+        assertEquals(updatedMovie.getPgRating(), result.pgRating());
+    }
+
 //
 //    @Test
 //    void delete() {

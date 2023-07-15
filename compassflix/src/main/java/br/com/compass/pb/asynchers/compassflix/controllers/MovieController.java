@@ -43,9 +43,9 @@ public class MovieController {
         return ResponseEntity.ok().body(response);
     }*/
 
-    @GetMapping(params = "movieName")
-    public ResponseEntity<Movie> searchByName(@RequestParam String movieName) {
-        var response = service.searchByName(movieName);
+    @GetMapping(params = "search")
+    public ResponseEntity<List<Movie>> findByName(@RequestParam("search") String name) {
+        var response = service.findByName(name);
 
         return ResponseEntity.ok().body(response);
     }
@@ -59,17 +59,16 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponseDto> update(@RequestBody @Valid MovieRequestDto movieRequestDto,
-                                                   @PathVariable String id, UriComponentsBuilder builder) {
-        var response = service.putMovie(movieRequestDto, id);
-        var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(response.id()).toUri();
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<MovieResponseDto> update(@PathVariable String id, @RequestBody MovieRequestDto movieRequestDto, UriComponentsBuilder builder) {
+        MovieResponseDto updatedMovie = service.updateMovie(id, movieRequestDto);
+        var uri = builder.path("/compassflix/movies/{id}").buildAndExpand(updatedMovie.id()).toUri();
+        return ResponseEntity.ok(updatedMovie);
     }
 
     @DeleteMapping("/{id}")
- 	public ResponseEntity<Void> delete(@PathVariable String id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

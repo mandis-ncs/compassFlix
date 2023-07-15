@@ -261,4 +261,71 @@ public class IntegrationTest {
         verify(service, times(1)).postMovie(movieRequestDto);
     }
 
+    @Test
+    void shouldBeAbleToUpdateAMovie() throws Exception {
+
+        MovieRequestDto movieRequestDto = new MovieRequestDto(
+                "Bastardos inglorios",
+                "Matando nazistas",
+                "Acao",
+                120L,
+                LocalDate.parse("2022-10-10"),
+                "pg-17");
+
+
+        Movie movie = new Movie();
+        movie.setId("64b19e553e1e2a527bd18ff6");
+        movie.setName("Bastardos inglorios");
+        movie.setDescription("Matando nazistas");
+        movie.setGenre("Acao");
+        movie.setDuration(120L);
+        movie.setReleaseDate(LocalDate.parse("2022-10-10"));
+        movie.setPgRating("pg-17");
+        movie.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
+
+
+        MovieResponseDto movieResponseDto = new MovieResponseDto(movie);
+
+        when(service.updateMovie("64b19e553e1e2a527bd18ff6", movieRequestDto)).thenReturn(movieResponseDto);
+
+        String jsonResponse = objectMapper.writeValueAsString(movieResponseDto);
+
+        String responseBody = "{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
+                "\"name\":\"Bastardos inglorios\"," +
+                "\"description\":\"Matando nazistas\"," +
+                "\"genre\":\"Acao\"," +
+                "\"duration\":120," +
+                "\"releaseDate\":\"2022-10-10\"," +
+                "\"pgRating\":\"pg-17\"," +
+                "\"registrationDate\":\"2023-07-14T19:13:25.465Z\"}";
+
+
+        mockMvc.perform(put("/compassflix/movies/{id}", "64b19e553e1e2a527bd18ff6")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(movieRequestDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+
+        verify(service, times(1)).updateMovie("64b19e553e1e2a527bd18ff6", movieRequestDto);
+
+        assertEquals(responseBody, jsonResponse);
+    }
+
+
+    @Test
+    void shouldReturnAnExceptionWhenCannotUpdate() throws Exception {
+        String invalidId = "invalid_id";
+
+        when(service.updateMovie(eq(invalidId), any())).thenThrow(MovieNotFoundException.class);
+
+        mockMvc.perform(put("/compassflix/movies/{id}", invalidId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        verify(service, times(1)).updateMovie(eq(invalidId), any());
+    }
+
 }

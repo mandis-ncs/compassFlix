@@ -198,4 +198,51 @@ class MovieControllerTest {
         assertEquals(expectedUri.toString(), returnedUri);
 
   }
+
+    @Test
+    void shouldBeAbleToUpdateAMovie() {
+        MovieRequestDto movieRequestDto = new MovieRequestDto(
+                "Bastardos inglorios",
+                "Matando nazistas",
+                "Acao",
+                120L,
+                LocalDate.parse("2022-10-10"),
+                "pg-17");
+
+
+        Movie movie = new Movie();
+        movie.setId("64b19e553e1e2a527bd18ff6");
+        movie.setName("Bastardos inglorios");
+        movie.setDescription("Matando nazistas");
+        movie.setGenre("Acao");
+        movie.setDuration(120L);
+        movie.setReleaseDate(LocalDate.parse("2022-10-10"));
+        movie.setPgRating("pg-17");
+        movie.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
+
+
+        MovieResponseDto movieResponseDto = new MovieResponseDto(movie);
+        String id = "64b19e553e1e2a527bd18ff6";
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/");
+
+        when(movieService.updateMovie(id, movieRequestDto)).thenReturn(movieResponseDto);
+
+        String expectedPath = "/compassflix/movies/" + id;
+        URI expectedUri = UriComponentsBuilder.fromPath(expectedPath).build().toUri();
+
+        ResponseEntity<MovieResponseDto> updatedMovie = movieController.update(id, movieRequestDto, builder);
+
+        verify(movieService, times(1)).updateMovie(id, movieRequestDto);
+        verifyNoMoreInteractions(movieService);
+        assertNotNull(updatedMovie);
+        assertSame(movieResponseDto, updatedMovie.getBody());
+        assertEquals(200, updatedMovie.getStatusCodeValue());
+
+        // test uri to verify if the return is not null
+        URI locationUri = updatedMovie.getHeaders().getLocation();
+        assertNotNull(locationUri);
+        String returnedUri = locationUri.toString();
+        assertEquals(expectedUri.toString(), returnedUri);
+
+    }
 }

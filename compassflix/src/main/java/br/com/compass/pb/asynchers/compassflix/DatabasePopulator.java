@@ -4,6 +4,7 @@ import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -15,9 +16,11 @@ import java.util.List;
 public class DatabasePopulator implements CommandLineRunner {
 
     private final MovieRepository movieRepository;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public DatabasePopulator(MovieRepository movieRepository) {
+    public DatabasePopulator(MongoTemplate mongoTemplate, MovieRepository movieRepository) {
+        this.mongoTemplate = mongoTemplate;
         this.movieRepository = movieRepository;
     }
 
@@ -88,8 +91,15 @@ public class DatabasePopulator implements CommandLineRunner {
         return Arrays.asList(movie1, movie2, movie3, movie4, movie5, movie6, movie7);
     }
 
+    private void deleteAndCreateDatabase() {
+        mongoTemplate.getDb().drop();
+        mongoTemplate.getDb().createCollection("movies");
+    }
+
     @Override
     public void run(String... args) {
+        deleteAndCreateDatabase();
+
         if (movieRepository.count() == 0) {
             List<Movie> movies = createMovies();
             movieRepository.insert(movies);

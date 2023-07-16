@@ -2,9 +2,7 @@ package br.com.compass.pb.asynchers.compassflix.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Date;
 
 // validation annotations go here
 

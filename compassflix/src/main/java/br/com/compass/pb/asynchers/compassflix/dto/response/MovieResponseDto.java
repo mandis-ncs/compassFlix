@@ -2,10 +2,8 @@ package br.com.compass.pb.asynchers.compassflix.dto.response;
 
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 
 public record MovieResponseDto(
         String id,

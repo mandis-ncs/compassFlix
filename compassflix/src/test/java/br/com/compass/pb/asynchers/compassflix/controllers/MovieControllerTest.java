@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -24,8 +23,6 @@ import static org.mockito.Mockito.*;
 
 class MovieControllerTest {
 
-    @Mock
-    private ModelMapper mapper;
     @Mock
     private MovieService movieService;
 
@@ -69,7 +66,6 @@ class MovieControllerTest {
         movie3.setPgRating("pg-5");
         movie3.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
 
-        // Arrange
         List<Movie> movies = Arrays.asList(
                 movie1,
                 movie2,
@@ -77,10 +73,8 @@ class MovieControllerTest {
         );
         when(movieService.findAllMovies()).thenReturn(movies);
 
-        // Act
         ResponseEntity<List<Movie>> response = movieController.findAll();
 
-        // Assert
         verify(movieService, times(1)).findAllMovies();
         verifyNoMoreInteractions(movieService);
         assertNotNull(response);
@@ -90,7 +84,6 @@ class MovieControllerTest {
 
     @Test
     void shouldFindMovieByIdAndReturnMovie() {
-        // Arrange
         String movieId = "64b1e14a36a86833234f6a42";
         Movie expectedMovie = new Movie();
         expectedMovie.setId(movieId);
@@ -104,10 +97,8 @@ class MovieControllerTest {
 
         when(movieService.findMovieById(movieId)).thenReturn(expectedMovie);
 
-        // Act
         ResponseEntity<Movie> response = movieController.findById(movieId);
 
-        // Assert
         verify(movieService, times(1)).findMovieById(movieId);
         verifyNoMoreInteractions(movieService);
         assertNotNull(response);
@@ -238,7 +229,6 @@ class MovieControllerTest {
         assertSame(movieResponseDto, updatedMovie.getBody());
         assertEquals(200, updatedMovie.getStatusCodeValue());
 
-        // test uri to verify if the return is not null
         URI locationUri = updatedMovie.getHeaders().getLocation();
         assertNotNull(locationUri);
         String returnedUri = locationUri.toString();

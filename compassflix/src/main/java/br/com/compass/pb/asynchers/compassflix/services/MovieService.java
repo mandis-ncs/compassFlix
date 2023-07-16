@@ -37,13 +37,6 @@ public class MovieService {
         return response.orElseThrow(() -> new MovieNotFoundException("That movie doesn't exists!"));
     }
 
-    /*public List<MovieResponseDto> searchByName(String name) {
-
-        return repository.findAll().stream().filter(movie -> movie.getName().contains(name)).
-                map(MovieResponseDto::new).toList();
-
-    }*/
-
     public List<Movie> findByName(String name) {
 
         return repository.findByNameIgnoreCaseContaining(name);
@@ -59,7 +52,6 @@ public class MovieService {
         log.info("### Success at posting movie with name {} ###", movieRequestDto.name());
         return new MovieResponseDto(response);
 
-        // MovieAlreadyExistException -> verify if product already exists
     }
 
 

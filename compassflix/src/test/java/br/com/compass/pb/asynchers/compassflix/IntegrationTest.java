@@ -74,8 +74,6 @@ public class IntegrationTest {
         movie.setPgRating("pg-17");
         movie.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
 
-//        String responseBody = objectMapper.writeValueAsString(movie);
-
         when(service.findAllMovies()).thenReturn(List.of(movie));
 
         String responseExpected = "[{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
@@ -124,8 +122,6 @@ public class IntegrationTest {
         movie.setPgRating("pg-17");
         movie.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
 
-//        String responseBody = objectMapper.writeValueAsString(movie);
-
         when(service.findMovieById("64b19e553e1e2a527bd18ff6")).thenReturn((movie));
 
         String responseExpected = "{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
@@ -137,9 +133,6 @@ public class IntegrationTest {
                 "\"pgRating\":\"pg-17\"," +
                 "\"registrationDate\":1689362005.465000000}";
 
-        //String responseExpected = this.mapper.writeValueAsString(movie);
-
-        // Realiza a requisição GET para o endpoint /compassflix/movies
         mockMvc.perform(get("/compassflix/movies/64b19e553e1e2a527bd18ff6")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(responseExpected))
@@ -180,15 +173,6 @@ public class IntegrationTest {
 
         when(service.findByName("Bastardos inglorios")).thenReturn(movieList);
 
-//        String responseExpected = "{\"id\":\"Bastardos inglorios\"," +
-//                "\"name\":\"Bastardos inglorios\"," +
-//                "\"description\":\"Matando nazistas\"," +
-//                "\"genre\":\"Acao\"," +
-//                "\"duration\":120," +
-//                "\"releaseDate\":[2022,10,10]," +
-//                "\"pgRating\":\"pg-17\"," +
-//                "\"registrationDate\":1689362005.465000000}";
-
         String jsonResponse = this.mapper.writeValueAsString(movieList);
 
         mockMvc.perform(get("/compassflix/movies/search").param("name", "Bastardos inglorios"))
@@ -219,19 +203,6 @@ public class IntegrationTest {
 
         when(service.postMovie(movieRequestDto)).thenReturn(movieResponseDto);
 
-//        String jsonResponse = objectMapper.writeValueAsString(movieResponseDto);
-
-//        String responseBody = "{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
-//                "\"name\":\"Bastardos inglorios\"," +
-//                "\"description\":\"Matando nazistas\"," +
-//                "\"genre\":\"Acao\"," +
-//                "\"duration\":120," +
-//                "\"releaseDate\":\"2022-10-10\"," +
-//                "\"pgRating\":\"pg-17\"," +
-//                "\"registrationDate\":\"2023-07-14T19:13:25.465Z\"}";
-
-//        String responseBody = this.mapper.writeValueAsString(movie);
-
         mockMvc.perform(post("/compassflix/movies/", "64b19e553e1e2a527bd18ff6")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movieRequestDto)))
@@ -239,8 +210,6 @@ public class IntegrationTest {
                 .andReturn();
 
         verify(service, times(1)).postMovie(movieRequestDto);
-
-        //assertEquals(responseBody, jsonResponse);
 
     }
 

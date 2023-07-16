@@ -5,7 +5,6 @@ import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.services.MovieService;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +17,6 @@ import java.util.List;
 @RequestMapping("/compassflix/movies")
 public class MovieController {
 
-    @Autowired
-    private ModelMapper mapper;
 
     @Autowired
     private MovieService service;
@@ -34,16 +31,8 @@ public class MovieController {
     public ResponseEntity<Movie> findById(@PathVariable String id) {
         var response = service.findMovieById(id);
         return ResponseEntity.ok(response);
-//        return ResponseEntity.ok().body(mapper.map(service.findMovieById(id), Movie.class));
-
     }
 
-    /*@GetMapping(params = "movieName")
-    public ResponseEntity<List<MovieResponseDto>> searchByName(@RequestParam String movieName) {
-        var response = service.searchByName(movieName);
-
-        return ResponseEntity.ok().body(response);
-    }*/
 
     @GetMapping(value = "/search", params = "name")
     public ResponseEntity<List<Movie>> findByName(@RequestParam("name") String name) {

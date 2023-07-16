@@ -9,10 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -45,9 +42,6 @@ class MovieServiceTest {
 
     @Mock
     private MovieRepository repository;
-
-    @Mock
-    private ModelMapper mapper;
 
     private Movie movie;
 
@@ -166,7 +160,6 @@ class MovieServiceTest {
     @Test
     void updateMovie() {
 
-        // mocking data of existing movie and changes to be updated
         String id = "1";
         MovieRequestDto movieRequestDto1 = new MovieRequestDto("Updated Movie", "Updated description",
                 "Drama", 150L,LocalDate.of(2020, 1, 1), "pg-13");
@@ -189,13 +182,11 @@ class MovieServiceTest {
         updatedMovie.setReleaseDate(movieRequestDto1.releaseDate());
         updatedMovie.setPgRating(movieRequestDto1.pgRating());
 
-        // find by id and update
         when(repository.findById(id)).thenReturn(Optional.of(existingMovie));
         when(repository.save(existingMovie)).thenReturn(updatedMovie);
 
         MovieResponseDto result = service.updateMovie(id, movieRequestDto1);
 
-        // verify if update occurs right and if the result is correct
         verify(repository, times(1)).findById(id);
         verify(repository, times(1)).save(existingMovie);
 

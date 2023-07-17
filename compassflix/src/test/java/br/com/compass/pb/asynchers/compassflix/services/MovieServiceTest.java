@@ -199,8 +199,16 @@ class MovieServiceTest {
         assertEquals(updatedMovie.getPgRating(), result.pgRating());
     }
 
-//
-//    @Test
-//    void delete() {
-//    }
+
+    @Test
+    void deleteMovie() {
+        String id = "1";
+
+        when(repository.findById(anyString())).thenReturn(optionalMovie);
+        doNothing().when(repository).deleteById(anyString());
+
+        service.delete(id);
+
+        verify(repository, times(1)).deleteById(id);
+    }
 }

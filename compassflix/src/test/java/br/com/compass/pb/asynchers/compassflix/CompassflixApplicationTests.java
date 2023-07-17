@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class CompassflixApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void main() {
+		CompassflixApplication.main(new String[] {});
 	}
 
 }

@@ -1,4 +1,4 @@
-package br.com.compass.pb.asynchers.compassflix;
+package br.com.compass.pb.asynchers.compassflix.data;
 
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
 import br.com.compass.pb.asynchers.compassflix.repositories.MovieRepository;
@@ -27,7 +27,7 @@ public class DatabasePopulator implements CommandLineRunner {
     private List<Movie> createMovies() {
         Movie movie1 = new Movie();
         movie1.setName("Inglorious bastards");
-        movie1.setDescription("Killing nazis");
+        movie1.setDescription("Too much action at war");
         movie1.setGenre("Action");
         movie1.setDuration(120L);
         movie1.setReleaseDate(LocalDate.of(2009, 10, 9));
@@ -77,6 +77,7 @@ public class DatabasePopulator implements CommandLineRunner {
         movie6.setDuration(90L);
         movie6.setReleaseDate(LocalDate.of(1980, 3, 11));
         movie6.setPgRating("pg-3");
+        movie6.setRegistrationDate(Instant.now());
 
         Movie movie7 = new Movie();
         movie7.setName("The return of those who never went");

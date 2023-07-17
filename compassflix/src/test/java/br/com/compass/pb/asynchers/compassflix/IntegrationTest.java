@@ -24,7 +24,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -33,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class IntegrationTest {
+class IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -65,10 +68,10 @@ public class IntegrationTest {
     void shouldBeAbleToFindAllMovies() throws Exception {
 
         Movie movie = new Movie();
-        movie.setId("64b19e553e1e2a527bd18ff6");
-        movie.setName("Bastardos inglorios");
-        movie.setDescription("Matando nazistas");
-        movie.setGenre("Acao");
+        movie.setId("64b1e14a36a86833234f6a42");
+        movie.setName("Avengers");
+        movie.setDescription("Heroes fighting");
+        movie.setGenre("Action");
         movie.setDuration(120L);
         movie.setReleaseDate(LocalDate.parse("2022-10-10"));
         movie.setPgRating("pg-17");
@@ -76,10 +79,10 @@ public class IntegrationTest {
 
         when(service.findAllMovies()).thenReturn(List.of(movie));
 
-        String responseExpected = "[{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
-                "\"name\":\"Bastardos inglorios\"," +
-                "\"description\":\"Matando nazistas\"," +
-                "\"genre\":\"Acao\"," +
+        String responseExpected = "[{\"id\":\"64b1e14a36a86833234f6a42\"," +
+                "\"name\":\"Avengers\"," +
+                "\"description\":\"Heroes fighting\"," +
+                "\"genre\":\"Action\"," +
                 "\"duration\":120," +
                 "\"releaseDate\":[2022,10,10]," +
                 "\"pgRating\":\"pg-17\"," +
@@ -113,33 +116,33 @@ public class IntegrationTest {
     void shouldBeAbleToFindMovieById() throws Exception {
 
         Movie movie = new Movie();
-        movie.setId("64b19e553e1e2a527bd18ff6");
-        movie.setName("Bastardos inglorios");
-        movie.setDescription("Matando nazistas");
-        movie.setGenre("Acao");
+        movie.setId("64b1e14a36a86833234f6a42");
+        movie.setName("Avengers");
+        movie.setDescription("Heroes fighting");
+        movie.setGenre("Action");
         movie.setDuration(120L);
         movie.setReleaseDate(LocalDate.parse("2022-10-10"));
         movie.setPgRating("pg-17");
         movie.setRegistrationDate(Instant.parse("2023-07-14T19:13:25.465Z"));
 
-        when(service.findMovieById("64b19e553e1e2a527bd18ff6")).thenReturn((movie));
+        when(service.findMovieById("64b1e14a36a86833234f6a42")).thenReturn((movie));
 
-        String responseExpected = "{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
-                "\"name\":\"Bastardos inglorios\"," +
-                "\"description\":\"Matando nazistas\"," +
-                "\"genre\":\"Acao\"," +
+        String responseExpected = "{\"id\":\"64b1e14a36a86833234f6a42\"," +
+                "\"name\":\"Avengers\"," +
+                "\"description\":\"Heroes fighting\"," +
+                "\"genre\":\"Action\"," +
                 "\"duration\":120," +
                 "\"releaseDate\":[2022,10,10]," +
                 "\"pgRating\":\"pg-17\"," +
                 "\"registrationDate\":1689362005.465000000}";
 
-        mockMvc.perform(get("/compassflix/movies/64b19e553e1e2a527bd18ff6")
+        mockMvc.perform(get("/compassflix/movies/64b1e14a36a86833234f6a42")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(responseExpected))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(service, times(1)).findMovieById("64b19e553e1e2a527bd18ff6");
+        verify(service, times(1)).findMovieById("64b1e14a36a86833234f6a42");
     }
 
     @Test
@@ -160,10 +163,10 @@ public class IntegrationTest {
     void shouldBeAbleToFindMovieByName() throws Exception {
 
         Movie movie = new Movie();
-        movie.setId("64b19e553e1e2a527bd18ff6");
-        movie.setName("Bastardos inglorios");
-        movie.setDescription("Matando nazistas");
-        movie.setGenre("Acao");
+        movie.setId("64b1e14a36a86833234f6a42");
+        movie.setName("Avengers");
+        movie.setDescription("Heroes fighting");
+        movie.setGenre("Action");
         movie.setDuration(120L);
         movie.setReleaseDate(LocalDate.parse("2022-10-10"));
         movie.setPgRating("pg-17");
@@ -171,29 +174,29 @@ public class IntegrationTest {
 
         List<Movie> movieList = List.of(movie);
 
-        when(service.findByName("Bastardos inglorios")).thenReturn(movieList);
+        when(service.findByName("Avengers")).thenReturn(movieList);
 
         String jsonResponse = this.mapper.writeValueAsString(movieList);
 
-        mockMvc.perform(get("/compassflix/movies/search").param("name", "Bastardos inglorios"))
+        mockMvc.perform(get("/compassflix/movies/search").param("name", "Avengers"))
                 .andExpect(content().json(jsonResponse))
                 .andExpect(status().isOk()).andExpect(jsonPath("$").isNotEmpty())
                 .andReturn();
 
-        verify(service, times(1)).findByName("Bastardos inglorios");
+        verify(service, times(1)).findByName("Avengers");
     }
 
     @Test
     void shouldBeAbleToCreateAMovie() throws Exception {
 
-        MovieRequestDto movieRequestDto = new MovieRequestDto("Bastardos inglorios", "Matando nazistas", "Acao",
+        MovieRequestDto movieRequestDto = new MovieRequestDto("Avengers", "Heroes fighting", "Action",
                 120L, LocalDate.parse("2022-10-10"), "pg-17");
 
         Movie movie = new Movie();
-        movie.setId("64b19e553e1e2a527bd18ff6");
-        movie.setName("Bastardos inglorios");
-        movie.setDescription("Matando nazistas");
-        movie.setGenre("Acao");
+        movie.setId("64b1e14a36a86833234f6a42");
+        movie.setName("Avengers");
+        movie.setDescription("Heroes fighting");
+        movie.setGenre("Action");
         movie.setDuration(120L);
         movie.setReleaseDate(LocalDate.parse("2022-10-10"));
         movie.setPgRating("pg-17");
@@ -203,7 +206,7 @@ public class IntegrationTest {
 
         when(service.postMovie(movieRequestDto)).thenReturn(movieResponseDto);
 
-        mockMvc.perform(post("/compassflix/movies/", "64b19e553e1e2a527bd18ff6")
+        mockMvc.perform(post("/compassflix/movies/", "64b1e14a36a86833234f6a42")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movieRequestDto)))
                 .andExpect(status().isCreated())
@@ -215,7 +218,7 @@ public class IntegrationTest {
 
     @Test
     void shouldReturnMovieAlreadyExistException() throws Exception {
-        MovieRequestDto movieRequestDto = new MovieRequestDto("Bastardos inglorios", "Matando nazistas", "Acao",
+        MovieRequestDto movieRequestDto = new MovieRequestDto("Avengers", "Heroes fighting", "Action",
                 120L, LocalDate.parse("2022-10-10"), "pg-17");
 
         when(service.postMovie(movieRequestDto))
@@ -234,19 +237,19 @@ public class IntegrationTest {
     void shouldBeAbleToUpdateAMovie() throws Exception {
 
         MovieRequestDto movieRequestDto = new MovieRequestDto(
-                "Bastardos inglorios",
-                "Matando nazistas",
-                "Acao",
+                "Avengers",
+                "Heroes fighting",
+                "Action",
                 120L,
                 LocalDate.parse("2022-10-10"),
                 "pg-17");
 
 
         Movie movie = new Movie();
-        movie.setId("64b19e553e1e2a527bd18ff6");
-        movie.setName("Bastardos inglorios");
-        movie.setDescription("Matando nazistas");
-        movie.setGenre("Acao");
+        movie.setId("64b1e14a36a86833234f6a42");
+        movie.setName("Avengers");
+        movie.setDescription("Heroes fighting");
+        movie.setGenre("Action");
         movie.setDuration(120L);
         movie.setReleaseDate(LocalDate.parse("2022-10-10"));
         movie.setPgRating("pg-17");
@@ -255,28 +258,28 @@ public class IntegrationTest {
 
         MovieResponseDto movieResponseDto = new MovieResponseDto(movie);
 
-        when(service.updateMovie("64b19e553e1e2a527bd18ff6", movieRequestDto)).thenReturn(movieResponseDto);
+        when(service.updateMovie("64b1e14a36a86833234f6a42", movieRequestDto)).thenReturn(movieResponseDto);
 
         String jsonResponse = objectMapper.writeValueAsString(movieResponseDto);
 
-        String responseBody = "{\"id\":\"64b19e553e1e2a527bd18ff6\"," +
-                "\"name\":\"Bastardos inglorios\"," +
-                "\"description\":\"Matando nazistas\"," +
-                "\"genre\":\"Acao\"," +
+        String responseBody = "{\"id\":\"64b1e14a36a86833234f6a42\"," +
+                "\"name\":\"Avengers\"," +
+                "\"description\":\"Heroes fighting\"," +
+                "\"genre\":\"Action\"," +
                 "\"duration\":120," +
                 "\"releaseDate\":\"2022-10-10\"," +
                 "\"pgRating\":\"pg-17\"," +
                 "\"registrationDate\":\"2023-07-14T19:13:25.465Z\"}";
 
 
-        mockMvc.perform(put("/compassflix/movies/{id}", "64b19e553e1e2a527bd18ff6")
+        mockMvc.perform(put("/compassflix/movies/{id}", "64b1e14a36a86833234f6a42")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(movieRequestDto)))
                 .andExpect(status().isOk())
                 .andReturn();
 
 
-        verify(service, times(1)).updateMovie("64b19e553e1e2a527bd18ff6", movieRequestDto);
+        verify(service, times(1)).updateMovie("64b1e14a36a86833234f6a42", movieRequestDto);
 
         assertEquals(responseBody, jsonResponse);
     }
@@ -295,6 +298,35 @@ public class IntegrationTest {
                 .andReturn();
 
         verify(service, times(1)).updateMovie(eq(invalidId), any());
+    }
+
+    @Test
+    void shouldBeAbleToDeleteMovie() throws Exception {
+
+        String id = "64b1e14a36a86833234f6a42";
+
+        mockMvc.perform(delete("/compassflix/movies/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andReturn();
+
+        verify(service, times(1)).delete((id));
+
+    }
+    @Test
+    void shouldReturnAnExceptionWhenCannotDeleteMovie() throws Exception {
+        String invalidId = "64b1e14a36a86833234f6a42";
+
+        doThrow(new MovieNotFoundException("That movie doesn't exist!")).when(service).delete(invalidId);
+
+        mockMvc.perform(delete("/compassflix/movies/{id}", invalidId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertEquals("That movie doesn't exist!",
+                        requireNonNull(result.getResolvedException()).getMessage()))
+                .andReturn();
+
+        verify(service, times(1)).delete(invalidId);
     }
 
 }

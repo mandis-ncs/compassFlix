@@ -3,6 +3,8 @@ package br.com.compass.pb.asynchers.compassflix.services;
 import br.com.compass.pb.asynchers.compassflix.dto.request.MovieRequestDto;
 import br.com.compass.pb.asynchers.compassflix.dto.response.MovieResponseDto;
 import br.com.compass.pb.asynchers.compassflix.entities.Movie;
+import br.com.compass.pb.asynchers.compassflix.exceptions.ListIsEmptyException;
+import br.com.compass.pb.asynchers.compassflix.exceptions.MovieAlreadyExistException;
 import br.com.compass.pb.asynchers.compassflix.exceptions.MovieNotFoundException;
 import br.com.compass.pb.asynchers.compassflix.repositories.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,18 +27,15 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class MovieServiceTest {
 
-    private static final String ID = "1234";
+    private static final String ID = "64b1e14a36a86833234f6a42";
     private static final Integer INDEX = 0;
-    private static final String NAME = "Movie 3";
-    private static final String DESCRIPTION = "blablabla";
+    private static final String NAME = "Avengers";
+    private static final String DESCRIPTION = "Heroes fighting";
     private static final String GENRE = "Action";
     private static final Long DURATION = 120L;
-    private static final LocalDate RELEASE_DATE = LocalDate.parse("2001-01-01");
-    private static final String PG_RATING = "pg-2";
+    private static final LocalDate RELEASE_DATE = LocalDate.parse("2022-10-10");
+    private static final String PG_RATING = "pg-17";
     private static final Instant REGISTRATION_DATE = Instant.now();
-
-    private static final String OBJECT_NOT_FOUND = "Movie not found!";
-
 
     @InjectMocks
     private MovieService service;
@@ -85,6 +85,17 @@ class MovieServiceTest {
     }
 
     @Test
+    void whenFindAllThenReturnAnListIsEmptyException() {
+
+        when(repository.findAll()).thenReturn(Collections.emptyList());
+
+        MovieNotFoundException movieNotFoundException = new MovieNotFoundException("No movies found!");
+
+        assertThrows(ListIsEmptyException.class, () -> service.findAllMovies());
+        assertEquals("No movies found!", movieNotFoundException.getMessage());
+    }
+
+    @Test
     void whenFindByIdThenReturnAnMovieInstance() {
         when(repository.findById(anyString())).thenReturn(optionalMovie);
 
@@ -106,18 +117,16 @@ class MovieServiceTest {
     @Test
     void whenFindByIdThenReturnAnMovieNotFoundException() {
 
-        when(repository.findById(anyString()))
-                .thenThrow(new MovieNotFoundException(OBJECT_NOT_FOUND));
+        when(repository.findById(anyString())).thenReturn(Optional.empty());
 
-        try{
-            service.findMovieById(ID);
-        } catch (Exception ex) {
-            assertEquals(MovieNotFoundException.class, ex.getClass());
-            assertEquals(OBJECT_NOT_FOUND, ex.getMessage());
-        }
+        MovieNotFoundException movieNotFoundException = new MovieNotFoundException("Movie not found!");
+
+        assertThrows(MovieNotFoundException.class, () -> service.findMovieById("invalidId"));
+        assertEquals("Movie not found!", movieNotFoundException.getMessage());
     }
 
-    void findByName() {
+    @Test
+    void whenFindByNameThenReturnAnMovieInstance() {
         when(repository.findByNameIgnoreCaseContaining(anyString())).thenReturn(List.of(movie));
 
         List<Movie> response = service.findByName(movieResponseDto.name().substring(0, 2));
@@ -137,7 +146,19 @@ class MovieServiceTest {
     }
 
     @Test
-    void postMovie() {
+    void whenFindByNameThenReturnAnMovieNotFoundException() {
+
+        when(repository.findByNameIgnoreCaseContaining(anyString())).thenReturn(Collections.emptyList());
+
+        MovieNotFoundException movieNotFoundException = new MovieNotFoundException("Movie not found!");
+
+        assertThrows(MovieNotFoundException.class, () -> service.findByName("Invalid name"));
+
+        assertEquals("Movie not found!", movieNotFoundException.getMessage());
+    }
+
+    @Test
+    void whenPostMovieThenCreateAnMovieInstance() {
         when(repository.save(any())).thenReturn(movie);
 
         MovieResponseDto response = service.postMovie(movieRequestDto);
@@ -158,7 +179,18 @@ class MovieServiceTest {
     }
 
     @Test
-    void updateMovie() {
+    void whenPostMovieThenReturnAnMovieAlreadyExistsException() {
+
+        when(repository.findAll()).thenReturn(Collections.singletonList(movie));
+
+        MovieAlreadyExistException movieAlreadyExistException = new MovieAlreadyExistException("That movie already exists!");
+
+        assertThrows(MovieAlreadyExistException.class, () -> service.postMovie(movieRequestDto));
+        assertEquals("That movie already exists!", movieAlreadyExistException.getMessage());
+    }
+
+    @Test
+    void whenUpdateMovieThenUpdateAnMovieInstance() {
 
         String id = "1";
         MovieRequestDto movieRequestDto1 = new MovieRequestDto("Updated Movie", "Updated description",
@@ -199,9 +231,19 @@ class MovieServiceTest {
         assertEquals(updatedMovie.getPgRating(), result.pgRating());
     }
 
+    @Test
+    void whenUpdateMovieThenReturnAnMovieNotFoundException() {
+
+        when(repository.findById(anyString())).thenReturn(Optional.empty());
+
+        MovieNotFoundException movieNotFoundException = new MovieNotFoundException("Movie not found!");
+        assertThrows(MovieNotFoundException.class, () -> service.updateMovie(anyString(), movieRequestDto));
+        assertEquals("Movie not found!", movieNotFoundException.getMessage());
+    }
+
 
     @Test
-    void deleteMovie() {
+    void whenDeleteMovieThenDeleteAnMovieInstance() {
         String id = "1";
 
         when(repository.findById(anyString())).thenReturn(optionalMovie);
@@ -210,5 +252,17 @@ class MovieServiceTest {
         service.delete(id);
 
         verify(repository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void whenDeleteMovieThenReturnAnMovieNotFoundException() {
+
+        when(repository.findById(anyString())).thenReturn(Optional.empty());
+
+        MovieNotFoundException movieNotFoundException = new MovieNotFoundException("Movie not found!");
+
+        assertThrows(MovieNotFoundException.class, () -> service.delete(anyString()));
+        assertEquals("Movie not found!", movieNotFoundException.getMessage());
+
     }
 }

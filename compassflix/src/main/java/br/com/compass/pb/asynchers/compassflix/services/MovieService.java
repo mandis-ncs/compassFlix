@@ -38,8 +38,11 @@ public class MovieService {
     }
 
     public List<Movie> findByName(String name) {
-
-        return repository.findByNameIgnoreCaseContaining(name);
+        List<Movie> movies = repository.findByNameIgnoreCaseContaining(name);
+        if (movies.isEmpty()) {
+            throw new MovieNotFoundException("No movies found with the specified name: " + name);
+        }
+        return movies;
     }
 
     public MovieResponseDto postMovie(MovieRequestDto movieRequestDto) {
@@ -54,27 +57,26 @@ public class MovieService {
 
     }
 
-
-
     public MovieResponseDto updateMovie(String id, MovieRequestDto obj) {
         log.info("### Searching movie by String Id {} ###", id);
-        Movie existingMovie = findMovieById(id);
+        Optional<Movie> existingMovie = repository.findById(id);
 
-        if (existingMovie == null) {
-            throw new MovieNotFoundException("Movie not found");
+        if (existingMovie.isPresent()) {
+            log.info("### Updating movie ###");
+            Movie movieToUpdate = existingMovie.get();
+            movieToUpdate.setName(obj.name());
+            movieToUpdate.setDescription(obj.description());
+            movieToUpdate.setGenre(obj.genre());
+            movieToUpdate.setDuration(obj.duration());
+            movieToUpdate.setReleaseDate(obj.releaseDate());
+            movieToUpdate.setPgRating(obj.pgRating());
+
+            log.info("### Saving movie ###");
+            Movie updatedMovie = repository.save(movieToUpdate);
+            return new MovieResponseDto(updatedMovie);
+        } else {
+            throw new MovieNotFoundException("Movie not found!");
         }
-
-        log.info("### Updating movie ###");
-        existingMovie.setName(obj.name());
-        existingMovie.setDescription(obj.description());
-        existingMovie.setGenre(obj.genre());
-        existingMovie.setDuration(obj.duration());
-        existingMovie.setReleaseDate(obj.releaseDate());
-        existingMovie.setPgRating(obj.pgRating());
-
-        log.info("### Saving movie ###");
-        Movie updatedMovie = repository.save(existingMovie);
-        return new MovieResponseDto(updatedMovie);
     }
 
     public void delete(String id) {

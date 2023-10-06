@@ -1,6 +1,8 @@
 # compassFlix
 CompassFlix is a movie rental themed RESTful API for the UOL Compass Challenge 2. Our API can handle data operations using HTTP verbs (GET, POST, PUT, DELETE). In the following steps, you will see how easy it is to register, consult, update, and delete a movie!
 
+![image](https://github.com/mandis-ncs/compassFlix/assets/85968113/867291e5-8dd8-42f5-9f07-93e7b7c4f3cb)
+
 ### 🛠️ Technologies
 The following technologies were used in this project:
 
